@@ -1,0 +1,59 @@
+<div style="max-width: 600px; margin: 30px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+  <h2>🐾 Cadastrar Novo Animal</h2>
+  <hr style="margin-bottom: 20px;">
+  
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+    <div>
+      <label>Nome do Animal:</label><br>
+      <input type="text" [(ngModel)]="animal.nome" style="width: 100%; padding: 8px;">
+    </div>
+    
+    <div>
+      <label>Idade:</label><br>
+      <input type="number" [(ngModel)]="animal.idade" style="width: 100%; padding: 8px;">
+    </div>
+
+    <div>
+      <label>Sexo:</label><br>
+      <select [(ngModel)]="animal.sexo" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; background-color: white;">
+        <option value="" disabled selected>-- Selecione --</option>
+        <option value="M">Macho</option>
+        <option value="F">Fêmea</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Raça:</label><br>
+      <input type="text" [(ngModel)]="animal.raca" style="width: 100%; padding: 8px;">
+    </div>
+
+    <div>
+      <label>Cor:</label><br>
+      <input type="text" [(ngModel)]="animal.cor" style="width: 100%; padding: 8px;">
+    </div>
+
+    <div>
+      <label>Pelagem:</label><br>
+      <input type="text" [(ngModel)]="animal.pelagem" style="width: 100%; padding: 8px;">
+    </div>
+  </div>
+
+  <div style="margin-top: 15px;">
+    <label><b>Selecione o Dono (Cliente):</b></label><br>
+    
+    <select [(ngModel)]="animal.clienteId" style="width: 100%; padding: 8px; border: 2px solid #007bff; border-radius: 4px; background-color: white;">
+      <option [ngValue]="null" disabled selected>-- Escolha um cliente --</option>
+      
+      <option *ngFor="let cli of clientes" [value]="cli.id">
+        {{ cli.nome }} (Telefone: {{ cli.telefone }})
+      </option>
+    </select>
+  </div>
+
+  <p *ngIf="mensagem" [ngStyle]="{'color': erro ? 'red' : 'green'}" style="margin-top: 15px;">{{ mensagem }}</p>
+
+  <div style="display: flex; gap: 10px; margin-top: 20px;">
+    <button (click)="salvar()" style="flex: 1; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; border-radius: 5px;">Salvar Animal</button>
+    <button routerLink="/painel" style="padding: 10px; background-color: #6c757d; color: white; border: none; cursor: pointer; border-radius: 5px;">Cancelar</button>
+  </div>
+</div>

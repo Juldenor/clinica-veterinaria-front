@@ -1,0 +1,25 @@
+<div style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+  <h2>Bem-vindo à Clínica Vet</h2>
+  
+  <div style="margin-bottom: 15px;">
+    <label>E-mail:</label><br>
+    <input type="email" [(ngModel)]="email" style="width: 100%; padding: 8px;">
+  </div>
+
+  <div style="margin-bottom: 15px;">
+    <label>Senha:</label><br>
+    <input type="password" [(ngModel)]="senha" style="width: 100%; padding: 8px;">
+  </div>
+
+  <p *ngIf="mensagemErro" style="color: red;">{{ mensagemErro }}</p>
+
+  <button (click)="fazerLogin()" style="width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer;">Entrar</button>
+
+  <p style="text-align: center; margin-top: 15px;">
+    <a routerLink="/esqueci-senha" style="color: #007bff; text-decoration: none;">Esqueci minha senha</a>
+  </p>
+
+  <p style="text-align: center; margin-top: 10px;">
+    <a routerLink="/registrar" style="color: #28a745; text-decoration: none;">Não tem uma conta? Crie aqui!</a>
+  </p>
+</div>

@@ -1,0 +1,17 @@
+<div style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+  <h2>Recuperar Senha</h2>
+  <p>Digite seu e-mail para receber uma nova senha provisória.</p>
+  
+  <div style="margin-bottom: 15px;">
+    <label>E-mail:</label><br>
+    <input type="email" [(ngModel)]="email" style="width: 100%; padding: 8px;">
+  </div>
+
+  <p [ngStyle]="{'color': erro ? 'red' : 'green'}">{{ mensagem }}</p>
+
+  <button (click)="recuperar()" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; margin-bottom: 15px;">Enviar Nova Senha</button>
+
+  <p style="text-align: center;">
+    <a routerLink="/login" style="color: #6c757d; text-decoration: none;">Voltar para o Login</a>
+  </p>
+</div>
