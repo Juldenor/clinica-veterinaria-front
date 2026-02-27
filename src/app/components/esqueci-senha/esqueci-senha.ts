@@ -1,33 +1,59 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Traz o ngStyle e ngIf
-import { FormsModule } from '@angular/forms'; // Traz o ngModel
-import { RouterModule } from '@angular/router'; // Traz o routerLink para voltar pro login
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-esqueci-senha',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule], // <-- O SEGREDO ESTÁ AQUI!
-  templateUrl: './esqueci-senha.html', // (Ou .component.html, dependendo de como está seu arquivo)
-  styleUrl: './esqueci-senha.css' // (Ou .component.css)
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './esqueci-senha.html',
+  styleUrls: ['./esqueci-senha.css'] 
 })
 export class EsqueciSenha {
+
   email = '';
   mensagem = '';
   erro = false;
+  carregando = false; 
 
   constructor(private authService: Auth) {}
 
   recuperar() {
-    this.mensagem = 'Enviando...';
+
+    if (!this.email) {
+      this.erro = true;
+      this.mensagem = 'Digite um e-mail válido.';
+      return;
+    }
+  
+    this.carregando = true;
+    this.erro = false;
+    this.mensagem = '';
+  
     this.authService.esqueciSenha(this.email).subscribe({
-      next: (resposta) => {
-        this.erro = false;
-        this.mensagem = resposta;
+      next: (resposta: any) => {
+        this.carregando = false;
+  
+        if (resposta && resposta.sucesso === true) {
+          this.erro = false;
+          this.mensagem = 'E-mail enviado com sucesso!';
+        } else {
+          this.erro = true;
+          this.mensagem = 'E-mail não encontrado.';
+        }
       },
       error: (err) => {
-        this.erro = true;
-        this.mensagem = 'Erro ao enviar. Verifique o e-mail digitado.';
+        this.carregando = false;
+  
+        if (err.status === 404) {
+          this.erro = true;
+          this.mensagem = 'E-mail não encontrado.';
+        } else {
+          this.erro = true;
+          this.mensagem = 'Erro ao enviar solicitação.';
+        }
       }
     });
   }

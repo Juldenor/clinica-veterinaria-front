@@ -1,0 +1,132 @@
+/* Fundo da página */
+.background {
+    height: 100vh;
+    background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Container principal */
+  .register-container {
+    display: flex;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    width: 850px;
+    max-width: 95%;
+  }
+  
+  /* Parte da imagem */
+  .register-image {
+    width: 50%;
+    display: none;
+  }
+  
+  .register-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Card */
+  .register-card {
+    width: 50%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .register-card h2 {
+    margin-bottom: 5px;
+    color: #2E7D32;
+  }
+  
+  .subtitle {
+    margin-bottom: 25px;
+    color: #777;
+    font-size: 14px;
+  }
+  
+  /* Inputs */
+  .input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  .input-group input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: 0.3s;
+  }
+  
+  .input-group input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 5px rgba(76,175,80,0.5);
+  }
+  
+  /* Botão */
+  button {
+    padding: 12px;
+    background-color: #17a2b8;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    background-color: #138496;
+    transform: scale(1.03);
+  }
+  
+  /* Mensagens */
+  .mensagem-erro {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  .mensagem-sucesso {
+    color: #2e7d32;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  /* Links */
+  .links {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .links a {
+    text-decoration: none;
+    color: #4CAF50;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+  
+  .links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsivo */
+  @media (min-width: 768px) {
+    .register-image {
+      display: block;
+    }
+  }

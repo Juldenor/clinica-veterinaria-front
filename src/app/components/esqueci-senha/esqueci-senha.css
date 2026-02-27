@@ -1,0 +1,125 @@
+/* Fundo diferente do login e registro */
+.background-recovery {
+    height: 100vh;
+    background: linear-gradient(135deg, #6A1B9A, #8E24AA);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Card central */
+  .recovery-card {
+    background: white;
+    padding: 40px;
+    border-radius: 14px;
+    width: 420px;
+    max-width: 95%;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Ícone decorativo */
+  .icon-area {
+    font-size: 50px;
+    margin-bottom: 15px;
+  }
+  
+  /* Título */
+  .recovery-card h2 {
+    margin-bottom: 10px;
+    color: #6A1B9A;
+  }
+  
+  .subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 25px;
+  }
+  
+  /* Input */
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .input-group label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: 0.3s;
+  }
+  
+  .input-group input:focus {
+    border-color: #8E24AA;
+    outline: none;
+    box-shadow: 0 0 6px rgba(142,36,170,0.4);
+  }
+  
+  /* Botão */
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #8E24AA;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    background-color: #6A1B9A;
+    transform: scale(1.03);
+  }
+  
+  /* Mensagens */
+  .mensagem-erro {
+    color: #d32f2f;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  
+  .mensagem-sucesso {
+    color: #2e7d32;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  
+  /* Link */
+  .links {
+    margin-top: 20px;
+  }
+  
+  .links a {
+    text-decoration: none;
+    color: #6A1B9A;
+    font-size: 14px;
+    transition: 0.3s;
+  }
+  
+  .links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Animação suave */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
