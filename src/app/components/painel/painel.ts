@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AnimalService } from '../../services/animal';
-import { ClienteService } from '../../services/cliente'; // <-- Importando os clientes
+import { ClienteService } from '../../services/cliente';
 
 @Component({
   selector: 'app-painel',
@@ -15,7 +15,6 @@ export class Painel implements OnInit {
   animais: any[] = [];
   clientes: any[] = [];
   
-  // Interruptores para mostrar/esconder as listas
   mostrarAnimais = false;
   mostrarClientes = false;
   
@@ -24,17 +23,15 @@ export class Painel implements OnInit {
   constructor(
     private router: Router, 
     private animalService: AnimalService,
-    private clienteService: ClienteService // <-- Injetado aqui!
+    private clienteService: ClienteService 
   ) {}
 
   ngOnInit() {
-    // 1. Busca todos os animais
     this.animalService.listarTodos().subscribe({
       next: (dados) => this.animais = dados,
       error: (err) => console.error('Erro ao carregar animais', err)
     });
 
-    // 2. Busca todos os clientes
     this.clienteService.listarClientes().subscribe({
       next: (dados) => this.clientes = dados,
       error: (err) => console.error('Erro ao carregar clientes', err)
@@ -50,15 +47,19 @@ export class Painel implements OnInit {
     this.router.navigate(['/cadastrar-animal']);
   }
 
-  // Funções do clique nos cartões
+  // Função nova para ir para a tela de clientes
+  irParaCadastroCliente() {
+    this.router.navigate(['/cadastrar-cliente']);
+  }
+
   abrirListaAnimais() {
-    this.mostrarAnimais = !this.mostrarAnimais; // Liga/desliga
-    this.mostrarClientes = false; // Esconde a outra lista
+    this.mostrarAnimais = !this.mostrarAnimais; 
+    this.mostrarClientes = false; 
   }
 
   abrirListaClientes() {
-    this.mostrarClientes = !this.mostrarClientes; // Liga/desliga
-    this.mostrarAnimais = false; // Esconde a outra lista
+    this.mostrarClientes = !this.mostrarClientes; 
+    this.mostrarAnimais = false; 
   }
 
   verDetalhes(animal: any) {

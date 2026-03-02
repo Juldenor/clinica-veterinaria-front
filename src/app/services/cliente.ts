@@ -20,4 +20,8 @@ export class ClienteService {
   listarClientes(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders() });
   }
+
+  cadastrar(cliente: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, cliente, { headers: this.getHeaders() });
+  }
 }

@@ -1,0 +1,33 @@
+<div style="max-width: 600px; margin: 30px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+  <h2>👥 Cadastrar Novo Cliente</h2>
+  <hr style="margin-bottom: 20px;">
+  
+  <div style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+    <div>
+      <label>Nome Completo:</label><br>
+      <input type="text" [(ngModel)]="cliente.nome" placeholder="Ex: João da Silva" style="width: 100%; padding: 8px;">
+    </div>
+    
+    <div>
+      <label>CPF:</label><br>
+      <input type="text" [(ngModel)]="cliente.cpf" placeholder="Apenas números" style="width: 100%; padding: 8px;">
+    </div>
+
+    <div>
+      <label>Telefone:</label><br>
+      <input type="text" [(ngModel)]="cliente.telefone" placeholder="(XX) XXXXX-XXXX" style="width: 100%; padding: 8px;">
+    </div>
+
+    <div>
+      <label>Endereço:</label><br>
+      <input type="text" [(ngModel)]="cliente.endereco" placeholder="Rua, Número, Bairro" style="width: 100%; padding: 8px;">
+    </div>
+  </div>
+
+  <p *ngIf="mensagem" [ngStyle]="{'color': erro ? 'red' : 'green'}" style="margin-top: 15px;">{{ mensagem }}</p>
+
+  <div style="display: flex; gap: 10px; margin-top: 25px;">
+    <button (click)="salvar()" style="flex: 1; padding: 10px; background-color: #17a2b8; color: white; border: none; cursor: pointer; border-radius: 5px; font-weight: bold;">Salvar Cliente</button>
+    <button routerLink="/painel" style="padding: 10px; background-color: #6c757d; color: white; border: none; cursor: pointer; border-radius: 5px;">Cancelar</button>
+  </div>
+</div>

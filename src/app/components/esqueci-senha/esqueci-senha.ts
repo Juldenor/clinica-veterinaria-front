@@ -21,7 +21,6 @@ export class EsqueciSenha {
   constructor(private authService: Auth) {}
 
   recuperar() {
-
     if (!this.email) {
       this.erro = true;
       this.mensagem = 'Digite um e-mail válido.';
@@ -41,18 +40,20 @@ export class EsqueciSenha {
           this.mensagem = 'E-mail enviado com sucesso!';
         } else {
           this.erro = true;
-          this.mensagem = 'E-mail não encontrado.';
+          this.mensagem = resposta?.mensagem || 'Erro ao processar solicitação.';
         }
       },
       error: (err) => {
         this.carregando = false;
   
-        if (err.status === 404) {
+        // O Spring Boot está retornando 400 (Bad Request) quando dá erro no Service
+        if (err.status === 400 || err.status === 404) {
           this.erro = true;
-          this.mensagem = 'E-mail não encontrado.';
+          // Tenta pegar a mensagem enviada pelo back-end, senão usa a padrão
+          this.mensagem = err.error?.mensagem || 'E-mail não encontrado no sistema.';
         } else {
           this.erro = true;
-          this.mensagem = 'Erro ao enviar solicitação.';
+          this.mensagem = 'Erro ao enviar solicitação. Tente novamente mais tarde.';
         }
       }
     });
