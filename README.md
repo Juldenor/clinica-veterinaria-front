@@ -30,8 +30,10 @@ Backend
 
 O projeto está dividido em:
 
-/backend → API REST em Spring Boot 
+/backend → API REST em Spring Boot
+
 /frontend → Aplicação Angular 
+
 /database → PostgreSQL integrado
 
 ---
