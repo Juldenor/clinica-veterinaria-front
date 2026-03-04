@@ -1,8 +1,8 @@
-🐾 Sistema de Clínica Veterinária
+# 🐾 Sistema de Clínica Veterinária
 
 Sistema web simples para gerenciamento de uma clínica veterinária.
 
- 🚀 Tecnologias utilizadas
+## 🚀 Tecnologias utilizadas
 
  Frontend
 - Angular
@@ -17,7 +17,7 @@ Backend
 
 ---
 
- 📌 Funcionalidades
+## 📌 Funcionalidades
 
 - Criar nova conta 
 - Recuperar minha senha
@@ -26,7 +26,7 @@ Backend
 
 ---
 
-🏗️ Arquitetura do Projeto
+## 🏗️ Arquitetura do Projeto
 
 O projeto está dividido em:
 
