@@ -20,6 +20,6 @@ export class Auth {
   }
   
   esqueciSenha(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/esqueci-senha`, { email }, { responseType: 'text' });
+    return this.http.post(`${this.apiUrl}/esqueci-senha`, { email });
   }
 }

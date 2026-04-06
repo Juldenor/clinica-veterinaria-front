@@ -1,93 +1,156 @@
-<div style="padding: 20px; font-family: sans-serif; background-color: #f4f6f9; min-height: 100vh;">
-  <header style="display: flex; justify-content: space-between; align-items: center; background-color: #007bff; color: white; padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <h2 style="margin: 0;">🐶 Sistema da Clínica Veterinária</h2>
-    <div>
-      <button (click)="irParaCadastroCliente()" style="background-color: #17a2b8; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-right: 10px; font-weight: bold;">
-        + Novo Cliente
-      </button> 
-      <button (click)="irParaCadastro()" style="background-color: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-right: 10px; font-weight: bold;">
-        + Novo Animal
-      </button> 
-      <button (click)="sair()" style="background-color: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Sair</button>
+<div style="padding: 30px; font-family: 'Inter', sans-serif; background-color: var(--bg-color); min-height: 100vh;">
+  
+  <header class="painel-header">
+    <h2>🐶 Dashboard J-Vet</h2>
+    <div class="painel-actions">
+      <button class="btn btn-info btn-sm" (click)="irParaCadastroCliente()">👥 Novo Cliente</button> 
+      <button class="btn btn-warning btn-sm" (click)="irParaCadastro()">🐾 Novo Animal</button> 
+      <button class="btn btn-purple btn-sm" (click)="irParaCadastroVeterinario()">👨‍⚕️ Novo Vet</button>
+      <button class="btn btn-success btn-sm" (click)="irParaCadastroAtendimento()">📅 Agendar Consulta</button>
+      <button class="btn btn-danger btn-sm" (click)="sair()">Sair</button>
     </div>
   </header>
 
-  <div style="display: flex; gap: 20px; margin-top: 30px;">
-    
-    <div (click)="abrirListaAnimais()" style="flex: 1; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; cursor: pointer; transition: 0.3s; border-left: 5px solid #ffc107;">
-      <h1 style="font-size: 50px; margin: 0;">🐾</h1>
-      <h2 style="margin: 10px 0 0 0; color: #333;">{{ animais.length }}</h2>
-      <p style="color: #6c757d; margin: 5px 0 0 0;">Animais Cadastrados</p>
-      <small style="color: #007bff; display: block; margin-top: 10px;">Clique para ver a lista</small>
+  <div style="display: flex; gap: 25px; flex-wrap: wrap;">
+    <div class="stat-card stat-animal" (click)="abrirListaAnimais()">
+      <h1>🐾</h1>
+      <h2>{{ animais.length }}</h2>
+      <p>Animais</p>
+      <small>Ver Lista Completa</small>
     </div>
 
-    <div (click)="abrirListaClientes()" style="flex: 1; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; cursor: pointer; transition: 0.3s; border-left: 5px solid #17a2b8;">
-      <h1 style="font-size: 50px; margin: 0;">👥</h1>
-      <h2 style="margin: 10px 0 0 0; color: #333;">{{ clientes.length }}</h2>
-      <p style="color: #6c757d; margin: 5px 0 0 0;">Clientes (Donos)</p>
-      <small style="color: #007bff; display: block; margin-top: 10px;">Clique para ver a lista</small>
+    <div class="stat-card stat-cliente" (click)="abrirListaClientes()">
+      <h1>👥</h1>
+      <h2>{{ clientes.length }}</h2>
+      <p>Clientes</p>
+      <small>Ver Lista Completa</small>
     </div>
 
+    <div class="stat-card stat-vet" (click)="abrirListaVeterinarios()">
+      <h1>👨‍⚕️</h1>
+      <h2>{{ veterinarios.length }}</h2>
+      <p>Veterinários</p>
+      <small>Ver Lista Completa</small>
+    </div>
+
+    <div class="stat-card stat-atend" (click)="abrirListaAtendimentos()">
+      <h1>📅</h1>
+      <h2>{{ atendimentos.length }}</h2>
+      <p>Atendimentos</p>
+      <small>Ver Lista Completa</small>
+    </div>
   </div>
 
-  <div *ngIf="mostrarAnimais" style="margin-top: 30px; padding: 20px; border-radius: 8px; background-color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <h3>📋 Lista de Animais</h3>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+  <div *ngIf="mostrarAnimais" class="table-container">
+    <table class="modern-table">
       <thead>
-        <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-          <th style="padding: 10px; text-align: left;">ID</th>
-          <th style="padding: 10px; text-align: left;">Nome</th>
-          <th style="padding: 10px; text-align: left;">Raça</th>
-          <th style="padding: 10px; text-align: center;">Ações</th>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Raça</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let anim of animais" style="border-bottom: 1px solid #eee;">
-          <td style="padding: 10px;">{{ anim.id }}</td>
-          <td style="padding: 10px;"><strong>{{ anim.nome }}</strong></td>
-          <td style="padding: 10px;">{{ anim.raca }}</td>
-          <td style="padding: 10px; text-align: center;">
-            <button (click)="verDetalhes(anim)" style="background-color: #17a2b8; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Ver Info</button>
+        <tr *ngFor="let anim of animais">
+          <td>#{{ anim.id }}</td>
+          <td><strong>{{ anim.nome }}</strong></td>
+          <td>{{ anim.raca }}</td>
+          <td>
+            <button class="btn btn-info btn-sm" (click)="verDetalhes(anim)">Ver Prontuário</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div *ngIf="mostrarClientes" style="margin-top: 30px; padding: 20px; border-radius: 8px; background-color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-    <h3>👥 Lista de Clientes</h3>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+  <div *ngIf="mostrarClientes" class="table-container">
+    <table class="modern-table">
       <thead>
-        <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-          <th style="padding: 10px; text-align: left;">ID</th>
-          <th style="padding: 10px; text-align: left;">Nome</th>
-          <th style="padding: 10px; text-align: left;">Telefone</th>
-          <th style="padding: 10px; text-align: left;">CPF</th>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Telefone</th>
+          <th>CPF</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let cli of clientes" style="border-bottom: 1px solid #eee;">
-          <td style="padding: 10px;">{{ cli.id }}</td>
-          <td style="padding: 10px;"><strong>{{ cli.nome }}</strong></td>
-          <td style="padding: 10px;">{{ cli.telefone }}</td>
-          <td style="padding: 10px;">{{ cli.cpf }}</td>
+        <tr *ngFor="let cli of clientes">
+          <td>#{{ cli.id }}</td>
+          <td><strong>{{ cli.nome }}</strong></td>
+          <td>{{ cli.telefone }}</td>
+          <td>{{ cli.cpf }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div *ngIf="animalSelecionado" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000;">
-    <div style="background-color: white; padding: 25px; border-radius: 8px; width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-      <h3 style="margin-top: 0; color: #007bff;">🐾 Detalhes de {{ animalSelecionado.nome }}</h3>
-      <hr>
-      <div style="font-size: 16px; line-height: 1.6;">
+  <div *ngIf="mostrarVeterinarios" class="table-container">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome do Vet</th>
+          <th>CRMV</th>
+          <th>E-mail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vet of veterinarios">
+          <td>#{{ vet.id }}</td>
+          <td><strong>{{ vet.nome }}</strong></td>
+          <td>{{ vet.crmv }}</td>
+          <td>{{ vet.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="mostrarAtendimentos" class="table-container">
+    <table class="modern-table">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Status</th>
+          <th>Paciente</th>
+          <th>Médico Vet.</th>
+          <th>Valor</th>
+          <th>Laudo/Detalhes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let at of atendimentos">
+          <td>{{ at.dataAtendimento | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <span style="padding: 4px 8px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;" 
+                  [ngStyle]="{'background-color': at.status === 'CONCLUIDO' ? '#D1FAE5' : (at.status === 'CANCELADO' ? '#FEE2E2' : '#FEF3C7'),
+                              'color': at.status === 'CONCLUIDO' ? '#065F46' : (at.status === 'CANCELADO' ? '#991B1B' : '#92400E')}">
+              {{ at.status }}
+            </span>
+          </td>
+          <td><strong>{{ at.animalNome }}</strong></td>
+          <td>Dr(a). {{ at.veterinarioNome }}</td>
+          <td>R$ {{ at.valor }}</td>
+          <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ at.descricao }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="animalSelecionado" class="modal-overlay">
+    <div class="modal-content">
+      <h3>🐾 Ficha Médica</h3>
+      <div style="font-size: 1rem; line-height: 1.8; margin-bottom: 20px;">
+        <p><strong>Paciente:</strong> {{ animalSelecionado.nome }}</p>
         <p><strong>Idade:</strong> {{ animalSelecionado.idade }} anos</p>
         <p><strong>Raça:</strong> {{ animalSelecionado.raca }}</p>
-        <p><strong>Dono:</strong> {{ animalSelecionado.nomeDono }}</p>
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
+        <p><strong>Tutor:</strong> {{ animalSelecionado.nomeDono }}</p>
+        <p><strong>CPF Tutor:</strong> {{ animalSelecionado.cpfDono }}</p>
       </div>
       
-      <div style="text-align: right; margin-top: 25px;">
-        <button (click)="fecharDetalhes()" style="background-color: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Fechar</button>
+      <div style="text-align: right;">
+        <button class="btn btn-secondary" (click)="fecharDetalhes()">Fechar</button>
       </div>
     </div>
   </div>

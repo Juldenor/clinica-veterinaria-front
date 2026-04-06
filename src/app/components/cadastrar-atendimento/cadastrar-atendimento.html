@@ -1,0 +1,48 @@
+<div class="container-center">
+  <div class="glass-card-wide" style="max-width: 650px;">
+    <h2 style="color: var(--secondary);">📅 Agendar Consulta</h2>
+    <hr style="margin-bottom: 25px; border-color: var(--border-color);">
+    
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Animal (Paciente)</label>
+        <select class="modern-input" [(ngModel)]="atendimento.animalId" [disabled]="animais.length === 0">
+          <option [ngValue]="null" disabled *ngIf="animais.length > 0">-- Escolha um Animal --</option>
+          <option [ngValue]="null" disabled *ngIf="animais.length === 0">-- Cadastre um Animal primeiro --</option>
+          <option *ngFor="let anim of animais" [value]="anim.id">{{ anim.nome }} ({{ anim.raca }})</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Veterinário Responsável</label>
+        <select class="modern-input" [(ngModel)]="atendimento.veterinarioId" [disabled]="veterinarios.length === 0">
+          <option [ngValue]="null" disabled *ngIf="veterinarios.length > 0">-- Escolha o Veterinário --</option>
+          <option [ngValue]="null" disabled *ngIf="veterinarios.length === 0">-- Cadastre um Vet primeiro --</option>
+          <option *ngFor="let vet of veterinarios" [value]="vet.id">Dr. {{ vet.nome }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date" class="modern-input" [(ngModel)]="atendimento.dataAtendimento">
+      </div>
+
+      <div class="form-group">
+        <label>Valor (R$)</label>
+        <input type="number" class="modern-input" [(ngModel)]="atendimento.valor" placeholder="150.00">
+      </div>
+      
+      <div class="form-group" style="grid-column: span 2;">
+        <label>Descrição do Caso / Queixa</label>
+        <textarea class="modern-input" [(ngModel)]="atendimento.descricao" placeholder="Detalhes dos sintomas, peso, vacinas etc."></textarea>
+      </div>
+    </div>
+
+    <p *ngIf="mensagem" [ngClass]="erro ? 'msg-error' : 'msg-success'">{{ mensagem }}</p>
+
+    <div class="flex-gap" style="margin-top: 20px;">
+      <button class="btn btn-success" style="flex: 1;" (click)="salvar()">Agendar Consulta</button>
+      <button class="btn btn-secondary" routerLink="/painel">Cancelar</button>
+    </div>
+  </div>
+</div>

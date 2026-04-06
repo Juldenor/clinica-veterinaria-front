@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AnimalService } from '../../services/animal';
 import { ClienteService } from '../../services/cliente';
+import { VeterinarioService } from '../../services/veterinario';
+import { AtendimentoService } from '../../services/atendimento';
 
 @Component({
   selector: 'app-painel',
@@ -14,16 +16,22 @@ import { ClienteService } from '../../services/cliente';
 export class Painel implements OnInit {
   animais: any[] = [];
   clientes: any[] = [];
+  veterinarios: any[] = [];
+  atendimentos: any[] = [];
   
   mostrarAnimais = false;
   mostrarClientes = false;
+  mostrarVeterinarios = false;
+  mostrarAtendimentos = false;
   
   animalSelecionado: any = null;
 
   constructor(
     private router: Router, 
     private animalService: AnimalService,
-    private clienteService: ClienteService 
+    private clienteService: ClienteService,
+    private veterinarioService: VeterinarioService,
+    private atendimentoService: AtendimentoService
   ) {}
 
   ngOnInit() {
@@ -36,6 +44,16 @@ export class Painel implements OnInit {
       next: (dados) => this.clientes = dados,
       error: (err) => console.error('Erro ao carregar clientes', err)
     });
+
+    this.veterinarioService.listarVeterinarios().subscribe({
+      next: (dados) => this.veterinarios = dados,
+      error: (err) => console.error('Erro ao carregar veterinários', err)
+    });
+
+    this.atendimentoService.listarAtendimentos().subscribe({
+      next: (dados) => this.atendimentos = dados,
+      error: (err) => console.error('Erro ao carregar atendimentos', err)
+    });
   }
 
   sair() {
@@ -47,19 +65,47 @@ export class Painel implements OnInit {
     this.router.navigate(['/cadastrar-animal']);
   }
 
-  // Função nova para ir para a tela de clientes
   irParaCadastroCliente() {
     this.router.navigate(['/cadastrar-cliente']);
   }
 
+  irParaCadastroVeterinario() {
+    this.router.navigate(['/cadastrar-veterinario']);
+  }
+
+  irParaCadastroAtendimento() {
+    this.router.navigate(['/cadastrar-atendimento']);
+  }
+
+  esconderTodos() {
+    this.mostrarAnimais = false;
+    this.mostrarClientes = false;
+    this.mostrarVeterinarios = false;
+    this.mostrarAtendimentos = false;
+  }
+
   abrirListaAnimais() {
-    this.mostrarAnimais = !this.mostrarAnimais; 
-    this.mostrarClientes = false; 
+    const atual = this.mostrarAnimais;
+    this.esconderTodos();
+    this.mostrarAnimais = !atual; 
   }
 
   abrirListaClientes() {
-    this.mostrarClientes = !this.mostrarClientes; 
-    this.mostrarAnimais = false; 
+    const atual = this.mostrarClientes;
+    this.esconderTodos();
+    this.mostrarClientes = !atual; 
+  }
+
+  abrirListaVeterinarios() {
+    const atual = this.mostrarVeterinarios;
+    this.esconderTodos();
+    this.mostrarVeterinarios = !atual;
+  }
+
+  abrirListaAtendimentos() {
+    const atual = this.mostrarAtendimentos;
+    this.esconderTodos();
+    this.mostrarAtendimentos = !atual;
   }
 
   verDetalhes(animal: any) {

@@ -17,6 +17,7 @@ export class EsqueciSenha {
   mensagem = '';
   erro = false;
   carregando = false; 
+  sucesso = false; // <-- NOVA VARIÁVEL AQUI
 
   constructor(private authService: Auth) {}
 
@@ -29,6 +30,7 @@ export class EsqueciSenha {
   
     this.carregando = true;
     this.erro = false;
+    this.sucesso = false; // <-- Resetar antes de enviar
     this.mensagem = '';
   
     this.authService.esqueciSenha(this.email).subscribe({
@@ -37,6 +39,7 @@ export class EsqueciSenha {
   
         if (resposta && resposta.sucesso === true) {
           this.erro = false;
+          this.sucesso = true; // <-- Marcar como sucesso
           this.mensagem = 'E-mail enviado com sucesso!';
         } else {
           this.erro = true;

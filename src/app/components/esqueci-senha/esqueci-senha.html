@@ -1,35 +1,24 @@
-<div class="background-recovery">
-  <div class="recovery-card">
-
-    <div class="icon-area">
-      🔒
+<div class="container-center" style="background: linear-gradient(135deg, var(--warning) 0%, var(--danger) 100%);">
+  <div class="glass-card">
+    <div style="text-align: center; margin-bottom: 25px;">
+      <h1 style="font-size: 3rem; margin-bottom: 10px;">🔒</h1>
+      <h2 style="color: var(--text-main); margin-bottom: 5px;">Recuperar Senha</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4;">Informe seu e-mail cadastrado para receber uma senha provisória imediatamente.</p>
     </div>
 
-    <h2>Recuperar Senha</h2>
-    <p class="subtitle">
-      Informe seu e-mail cadastrado para receber uma senha provisória.
-    </p>
-
-    <div class="input-group">
-      <label>E-mail</label>
-      <input 
-        type="email" 
-        [(ngModel)]="email" 
-        placeholder="Digite seu e-mail">
+    <div class="form-group">
+      <label>E-mail Cadastrado</label>
+      <input type="email" class="modern-input" [(ngModel)]="email" placeholder="nome@exemplo.com">
     </div>
 
-    <p *ngIf="mensagem"
-       [ngClass]="erro ? 'mensagem-erro' : 'mensagem-sucesso'">
-       {{ mensagem }}
-    </p>
+    <p *ngIf="mensagem" [ngClass]="erro ? 'msg-error' : 'msg-success'" style="text-align: center;">{{ mensagem }}</p>
 
-    <button (click)="recuperar()" [disabled]="carregando">
-      {{ carregando ? 'Enviando...' : 'Enviar Nova Senha' }}
+    <button class="btn btn-warning" style="margin-top: 15px;" (click)="recuperar()" [disabled]="carregando || sucesso">
+      {{ sucesso ? 'E-mail Enviado!' : (carregando ? 'Enviando...' : 'Enviar Nova Senha') }}
     </button>
 
-    <div class="links">
-      <a routerLink="/login">← Voltar para o Login</a>
+    <div style="text-align: center; margin-top: 25px; font-size: 0.9rem;">
+      <a routerLink="/login" style="color: var(--text-muted); text-decoration: none; font-weight: 500;">← Voltar para o Login</a>
     </div>
-
   </div>
 </div>

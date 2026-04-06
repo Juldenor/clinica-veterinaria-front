@@ -1,33 +1,30 @@
-<div style="max-width: 600px; margin: 30px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
-  <h2>👥 Cadastrar Novo Cliente</h2>
-  <hr style="margin-bottom: 20px;">
-  
-  <div style="display: grid; grid-template-columns: 1fr; gap: 15px;">
-    <div>
-      <label>Nome Completo:</label><br>
-      <input type="text" [(ngModel)]="cliente.nome" placeholder="Ex: João da Silva" style="width: 100%; padding: 8px;">
-    </div>
+<div class="container-center">
+  <div class="glass-card-wide" style="max-width: 600px;">
+    <h2 style="color: var(--info);">👥 Cadastrar Novo Cliente</h2>
+    <hr style="margin-bottom: 25px; border-color: var(--border-color);">
     
-    <div>
-      <label>CPF:</label><br>
-      <input type="text" [(ngModel)]="cliente.cpf" placeholder="Apenas números" style="width: 100%; padding: 8px;">
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nome Completo</label>
+        <input type="text" class="modern-input" [(ngModel)]="cliente.nome" placeholder="Maria da Silva">
+      </div>
+      
+      <div class="form-group">
+        <label>Telefone</label>
+        <input type="text" class="modern-input" [(ngModel)]="cliente.telefone" placeholder="(11) 99999-9999">
+      </div>
+
+      <div class="form-group" style="grid-column: span 2;">
+        <label>CPF</label>
+        <input type="text" class="modern-input" [(ngModel)]="cliente.cpf" placeholder="000.000.000-00">
+      </div>
     </div>
 
-    <div>
-      <label>Telefone:</label><br>
-      <input type="text" [(ngModel)]="cliente.telefone" placeholder="(XX) XXXXX-XXXX" style="width: 100%; padding: 8px;">
+    <p *ngIf="mensagem" [ngClass]="erro ? 'msg-error' : 'msg-success'">{{ mensagem }}</p>
+
+    <div class="flex-gap" style="margin-top: 20px;">
+      <button class="btn btn-info" style="flex: 1;" (click)="salvar()">Salvar Cliente</button>
+      <button class="btn btn-secondary" routerLink="/painel">Cancelar</button>
     </div>
-
-    <div>
-      <label>Endereço:</label><br>
-      <input type="text" [(ngModel)]="cliente.endereco" placeholder="Rua, Número, Bairro" style="width: 100%; padding: 8px;">
-    </div>
-  </div>
-
-  <p *ngIf="mensagem" [ngStyle]="{'color': erro ? 'red' : 'green'}" style="margin-top: 15px;">{{ mensagem }}</p>
-
-  <div style="display: flex; gap: 10px; margin-top: 25px;">
-    <button (click)="salvar()" style="flex: 1; padding: 10px; background-color: #17a2b8; color: white; border: none; cursor: pointer; border-radius: 5px; font-weight: bold;">Salvar Cliente</button>
-    <button routerLink="/painel" style="padding: 10px; background-color: #6c757d; color: white; border: none; cursor: pointer; border-radius: 5px;">Cancelar</button>
   </div>
 </div>

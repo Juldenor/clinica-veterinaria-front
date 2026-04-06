@@ -1,0 +1,35 @@
+<div class="container-center">
+  <div class="glass-card-wide" style="max-width: 600px;">
+    <h2 style="color: var(--purple);">👨‍⚕️ Cadastrar Veterinário</h2>
+    <hr style="margin-bottom: 25px; border-color: var(--border-color);">
+    
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Nome Completo</label>
+        <input type="text" class="modern-input" [(ngModel)]="veterinario.nome" placeholder="Dr. Fulano">
+      </div>
+      
+      <div class="form-group">
+        <label>CRMV</label>
+        <input type="text" class="modern-input" [(ngModel)]="veterinario.crmv" placeholder="12345-SP">
+      </div>
+
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" class="modern-input" [(ngModel)]="veterinario.email" placeholder="vet@clinica.com">
+      </div>
+
+      <div class="form-group">
+        <label>Senha de Acesso</label>
+        <input type="password" class="modern-input" [(ngModel)]="veterinario.senha" placeholder="••••••••">
+      </div>
+    </div>
+
+    <p *ngIf="mensagem" [ngClass]="erro ? 'msg-error' : 'msg-success'">{{ mensagem }}</p>
+
+    <div class="flex-gap" style="margin-top: 20px;">
+      <button class="btn btn-purple" style="flex: 1;" (click)="salvar()">Salvar Veterinário</button>
+      <button class="btn btn-secondary" routerLink="/painel">Cancelar</button>
+    </div>
+  </div>
+</div>

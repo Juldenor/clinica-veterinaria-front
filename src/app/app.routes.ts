@@ -5,6 +5,8 @@ import { Registrar } from './components/registrar/registrar';
 import { Painel } from './components/painel/painel';
 import { CadastrarAnimal } from './components/cadastrar-animal/cadastrar-animal';
 import { CadastrarCliente } from './cadastrar-cliente/cadastrar-cliente';
+import { CadastrarVeterinario } from './components/cadastrar-veterinario/cadastrar-veterinario';
+import { CadastrarAtendimento } from './components/cadastrar-atendimento/cadastrar-atendimento';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, 
@@ -13,5 +15,7 @@ export const routes: Routes = [
   { path: 'registrar', component: Registrar },
   { path: 'painel', component: Painel },
   { path: 'cadastrar-animal', component: CadastrarAnimal },
-  { path: 'cadastrar-cliente', component: CadastrarCliente }
+  { path: 'cadastrar-cliente', component: CadastrarCliente },
+  { path: 'cadastrar-veterinario', component: CadastrarVeterinario },
+  { path: 'cadastrar-atendimento', component: CadastrarAtendimento }
 ];
