@@ -9,7 +9,7 @@
         <select class="modern-input" [(ngModel)]="atendimento.animalId" [disabled]="animais.length === 0">
           <option [ngValue]="null" disabled *ngIf="animais.length > 0">-- Escolha um Animal --</option>
           <option [ngValue]="null" disabled *ngIf="animais.length === 0">-- Cadastre um Animal primeiro --</option>
-          <option *ngFor="let anim of animais" [value]="anim.id">{{ anim.nome }} ({{ anim.raca }})</option>
+          <option *ngFor="let anim of animais" [ngValue]="anim.id">{{ anim.nome }} ({{ anim.raca }})</option>
         </select>
       </div>
 
@@ -18,7 +18,7 @@
         <select class="modern-input" [(ngModel)]="atendimento.veterinarioId" [disabled]="veterinarios.length === 0">
           <option [ngValue]="null" disabled *ngIf="veterinarios.length > 0">-- Escolha o Veterinário --</option>
           <option [ngValue]="null" disabled *ngIf="veterinarios.length === 0">-- Cadastre um Vet primeiro --</option>
-          <option *ngFor="let vet of veterinarios" [value]="vet.id">Dr. {{ vet.nome }}</option>
+          <option *ngFor="let vet of veterinarios" [ngValue]="vet.id">Dr. {{ vet.nome }}</option>
         </select>
       </div>
 

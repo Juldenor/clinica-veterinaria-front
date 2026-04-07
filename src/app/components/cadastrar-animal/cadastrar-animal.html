@@ -23,7 +23,7 @@
         <label>Dono (Cliente)</label>
         <select class="modern-input" [(ngModel)]="animal.clienteId">
           <option [ngValue]="null" disabled>-- Escolha o Dono --</option>
-          <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }} (CPF: {{ cliente.cpf }})</option>
+          <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">{{ cliente.nome }} (CPF: {{ cliente.cpf }})</option>
         </select>
       </div>
     </div>
