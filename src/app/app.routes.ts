@@ -16,6 +16,6 @@ export const routes: Routes = [
   { path: 'painel', component: Painel },
   { path: 'cadastrar-animal', component: CadastrarAnimal },
   { path: 'cadastrar-cliente', component: CadastrarCliente },
-  { path: 'cadastrar-veterinario', component: CadastrarVeterinario },
-  { path: 'cadastrar-atendimento', component: CadastrarAtendimento }
+  { path: 'cadastrar-atendimento', component: CadastrarAtendimento },
+  { path: '**', redirectTo: 'login' }
 ];
