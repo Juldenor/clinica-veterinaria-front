@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core'; // <-- Adicionei o OnInit aqui
-import { CommonModule } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core'; // <-- Adicionei o OnInit aqui
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AnimalService } from '../../services/animal';
@@ -31,10 +31,15 @@ export class CadastrarAnimal implements OnInit {
   constructor(
     private animalService: AnimalService, 
     private clienteService: ClienteService, 
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.clienteService.listarClientes().subscribe({
       next: (dados) => {
         this.clientes = dados; 

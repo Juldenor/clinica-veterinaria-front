@@ -11,6 +11,8 @@
     </div>
   </header>
 
+  <p *ngIf="erroPainel" class="msg-error">{{ erroPainel }}</p>
+
   <div style="display: flex; gap: 25px; flex-wrap: wrap;">
     <div class="stat-card stat-animal" (click)="abrirListaAnimais()">
       <h1>🐾</h1>
@@ -107,6 +109,9 @@
   </div>
 
   <div *ngIf="mostrarAtendimentos" class="table-container">
+    <p *ngIf="mensagemStatus" [ngClass]="erroStatus ? 'msg-error' : 'msg-success'" class="table-feedback">
+      {{ mensagemStatus }}
+    </p>
     <table class="modern-table">
       <thead>
         <tr>
@@ -122,11 +127,18 @@
         <tr *ngFor="let at of atendimentos">
           <td>{{ at.dataAtendimento | date:'dd/MM/yyyy' }}</td>
           <td>
-            <span style="padding: 4px 8px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;" 
-                  [ngStyle]="{'background-color': at.status === 'CONCLUIDO' ? '#D1FAE5' : (at.status === 'CANCELADO' ? '#FEE2E2' : '#FEF3C7'),
-                              'color': at.status === 'CONCLUIDO' ? '#065F46' : (at.status === 'CANCELADO' ? '#991B1B' : '#92400E')}">
-              {{ at.status }}
-            </span>
+            <select
+              class="status-select"
+              [ngClass]="{
+                'status-concluido': at.status === 'CONCLUIDO',
+                'status-cancelado': at.status === 'CANCELADO',
+                'status-agendado': at.status === 'AGENDADO'
+              }"
+              [ngModel]="at.status"
+              (ngModelChange)="atualizarStatusAtendimento(at, $event)"
+            >
+              <option *ngFor="let status of statusAtendimentos" [ngValue]="status">{{ status }}</option>
+            </select>
           </td>
           <td><strong>{{ at.animalNome }}</strong></td>
           <td>Dr(a). {{ at.veterinarioNome }}</td>
@@ -138,16 +150,66 @@
   </div>
 
   <div *ngIf="animalSelecionado" class="modal-overlay">
-    <div class="modal-content">
-      <h3>🐾 Ficha Médica</h3>
-      <div style="font-size: 1rem; line-height: 1.8; margin-bottom: 20px;">
-        <p><strong>Paciente:</strong> {{ animalSelecionado.nome }}</p>
-        <p><strong>Idade:</strong> {{ animalSelecionado.idade }} anos</p>
-        <p><strong>Raça:</strong> {{ animalSelecionado.raca }}</p>
-        <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
-        <p><strong>Tutor:</strong> {{ animalSelecionado.nomeDono }}</p>
-        <p><strong>CPF Tutor:</strong> {{ animalSelecionado.cpfDono }}</p>
+    <div class="modal-content prontuario-modal">
+      <h3>Ficha Medica</h3>
+      <div class="prontuario-grid">
+        <section class="prontuario-card">
+          <h4>Dados do Paciente</h4>
+          <p><strong>Paciente:</strong> {{ animalSelecionado.nome }}</p>
+          <p><strong>Idade:</strong> {{ animalSelecionado.idade }} anos</p>
+          <p><strong>Raca:</strong> {{ animalSelecionado.raca }}</p>
+          <p><strong>Tutor:</strong> {{ animalSelecionado.nomeDono }}</p>
+          <p><strong>CPF Tutor:</strong> {{ animalSelecionado.cpfDono }}</p>
+        </section>
+
+        <section class="prontuario-card">
+          <h4>Resumo Clinico</h4>
+          <div class="prontuario-metricas">
+            <div>
+              <span>{{ historicoAnimal.length }}</span>
+              <small>Atendimentos</small>
+            </div>
+            <div>
+              <span>{{ consultasConcluidasAnimal() }}</span>
+              <small>Concluidos</small>
+            </div>
+            <div>
+              <span>{{ totalInvestidoAnimal() | currency:'BRL':'symbol':'1.2-2' }}</span>
+              <small>Total investido</small>
+            </div>
+          </div>
+        </section>
       </div>
+
+      <section class="historico-section">
+        <h4>Historico de Atendimentos</h4>
+
+        <p *ngIf="carregandoHistorico" class="historico-muted">Carregando historico clinico...</p>
+        <p *ngIf="erroHistorico" class="msg-error">{{ erroHistorico }}</p>
+        <p *ngIf="!carregandoHistorico && !erroHistorico && historicoAnimal.length === 0" class="historico-muted">
+          Este animal ainda nao possui atendimentos registrados.
+        </p>
+
+        <div *ngIf="historicoAnimal.length > 0" class="historico-lista">
+          <article *ngFor="let item of historicoAnimal" class="historico-item">
+            <div class="historico-topo">
+              <strong>{{ item.dataAtendimento | date:'dd/MM/yyyy' }}</strong>
+              <span
+                class="status-chip"
+                [ngClass]="{
+                  'status-concluido': item.status === 'CONCLUIDO',
+                  'status-cancelado': item.status === 'CANCELADO',
+                  'status-agendado': item.status === 'AGENDADO'
+                }"
+              >
+                {{ item.status }}
+              </span>
+            </div>
+            <p>Dr(a). {{ item.veterinarioNome }} - {{ item.valor | currency:'BRL':'symbol':'1.2-2' }}</p>
+            <small>{{ item.descricao || 'Sem descricao registrada.' }}</small>
+          </article>
+        </div>
+      </section>
       
       <div style="text-align: right;">
         <button class="btn btn-secondary" (click)="fecharDetalhes()">Fechar</button>

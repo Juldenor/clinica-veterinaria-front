@@ -1,25 +1,31 @@
 <div class="container-center">
   <div class="glass-card-wide" style="max-width: 650px;">
-    <h2 style="color: var(--secondary);">📅 Agendar Consulta</h2>
+    <h2 style="color: var(--secondary);">Agendar Consulta</h2>
     <hr style="margin-bottom: 25px; border-color: var(--border-color);">
-    
+
     <div class="grid-2">
       <div class="form-group">
         <label>Animal (Paciente)</label>
-        <select class="modern-input" [(ngModel)]="atendimento.animalId" [disabled]="animais.length === 0">
-          <option [ngValue]="null" disabled *ngIf="animais.length > 0">-- Escolha um Animal --</option>
-          <option [ngValue]="null" disabled *ngIf="animais.length === 0">-- Cadastre um Animal primeiro --</option>
+        <select class="modern-input" [(ngModel)]="atendimento.animalId" [disabled]="carregandoAnimais || animais.length === 0 || !!erroAnimais">
+          <option [ngValue]="null" disabled *ngIf="carregandoAnimais">-- Carregando animais --</option>
+          <option [ngValue]="null" disabled *ngIf="!carregandoAnimais && erroAnimais">-- Erro ao carregar animais --</option>
+          <option [ngValue]="null" disabled *ngIf="!carregandoAnimais && !erroAnimais && animais.length > 0">-- Escolha um Animal --</option>
+          <option [ngValue]="null" disabled *ngIf="!carregandoAnimais && !erroAnimais && animais.length === 0">-- Cadastre um Animal primeiro --</option>
           <option *ngFor="let anim of animais" [ngValue]="anim.id">{{ anim.nome }} ({{ anim.raca }})</option>
         </select>
+        <p *ngIf="erroAnimais" class="msg-error">{{ erroAnimais }}</p>
       </div>
 
       <div class="form-group">
-        <label>Veterinário Responsável</label>
-        <select class="modern-input" [(ngModel)]="atendimento.veterinarioId" [disabled]="veterinarios.length === 0">
-          <option [ngValue]="null" disabled *ngIf="veterinarios.length > 0">-- Escolha o Veterinário --</option>
-          <option [ngValue]="null" disabled *ngIf="veterinarios.length === 0">-- Cadastre um Vet primeiro --</option>
+        <label>Veterinario Responsavel</label>
+        <select class="modern-input" [(ngModel)]="atendimento.veterinarioId" [disabled]="carregandoVeterinarios || veterinarios.length === 0 || !!erroVeterinarios">
+          <option [ngValue]="null" disabled *ngIf="carregandoVeterinarios">-- Carregando veterinarios --</option>
+          <option [ngValue]="null" disabled *ngIf="!carregandoVeterinarios && erroVeterinarios">-- Erro ao carregar veterinarios --</option>
+          <option [ngValue]="null" disabled *ngIf="!carregandoVeterinarios && !erroVeterinarios && veterinarios.length > 0">-- Escolha o Veterinario --</option>
+          <option [ngValue]="null" disabled *ngIf="!carregandoVeterinarios && !erroVeterinarios && veterinarios.length === 0">-- Cadastre um Vet primeiro --</option>
           <option *ngFor="let vet of veterinarios" [ngValue]="vet.id">Dr. {{ vet.nome }}</option>
         </select>
+        <p *ngIf="erroVeterinarios" class="msg-error">{{ erroVeterinarios }}</p>
       </div>
 
       <div class="form-group">
@@ -31,9 +37,9 @@
         <label>Valor (R$)</label>
         <input type="number" class="modern-input" [(ngModel)]="atendimento.valor" placeholder="150.00">
       </div>
-      
+
       <div class="form-group" style="grid-column: span 2;">
-        <label>Descrição do Caso / Queixa</label>
+        <label>Descricao do Caso / Queixa</label>
         <textarea class="modern-input" [(ngModel)]="atendimento.descricao" placeholder="Detalhes dos sintomas, peso, vacinas etc."></textarea>
       </div>
     </div>
@@ -41,7 +47,7 @@
     <p *ngIf="mensagem" [ngClass]="erro ? 'msg-error' : 'msg-success'">{{ mensagem }}</p>
 
     <div class="flex-gap" style="margin-top: 20px;">
-      <button class="btn btn-success" style="flex: 1;" (click)="salvar()">Agendar Consulta</button>
+      <button class="btn btn-success" style="flex: 1;" (click)="salvar()" [disabled]="carregandoAnimais || carregandoVeterinarios">Agendar Consulta</button>
       <button class="btn btn-secondary" routerLink="/painel">Cancelar</button>
     </div>
   </div>

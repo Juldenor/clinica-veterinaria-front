@@ -21,7 +21,15 @@ export class AtendimentoService {
     return this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders() });
   }
 
+  listarPorAnimal(animalId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/animal/${animalId}`, { headers: this.getHeaders() });
+  }
+
   cadastrar(atendimento: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, atendimento, { headers: this.getHeaders() });
+  }
+
+  atualizarStatus(id: number, status: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${id}/status`, { status }, { headers: this.getHeaders() });
   }
 }

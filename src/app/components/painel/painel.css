@@ -1,0 +1,127 @@
+.table-feedback {
+  padding: 14px 16px 0;
+}
+
+.status-select {
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 12px;
+}
+
+.status-select:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.35);
+}
+
+.status-agendado {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.status-concluido {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+.status-cancelado {
+  background-color: #FEE2E2;
+  color: #991B1B;
+}
+
+.prontuario-modal {
+  max-width: 760px;
+}
+
+.prontuario-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr 1.2fr;
+  margin-bottom: 20px;
+}
+
+.prontuario-card {
+  background: #F9FAFB;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+}
+
+.prontuario-card h4,
+.historico-section h4 {
+  color: var(--text-main);
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.prontuario-metricas {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.prontuario-metricas div {
+  background: white;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  padding: 12px;
+}
+
+.prontuario-metricas span {
+  color: var(--primary);
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.prontuario-metricas small,
+.historico-muted,
+.historico-item small {
+  color: var(--text-muted);
+}
+
+.historico-section {
+  border-top: 1px solid var(--border-color);
+  padding-top: 18px;
+}
+
+.historico-lista {
+  display: grid;
+  gap: 12px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.historico-item {
+  border: 1px solid var(--border-color);
+  border-left: 5px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+.historico-item p {
+  margin: 8px 0 4px;
+}
+
+.historico-topo {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.status-chip {
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 5px 10px;
+}
+
+@media (max-width: 700px) {
+  .prontuario-grid,
+  .prontuario-metricas {
+    grid-template-columns: 1fr;
+  }
+}
