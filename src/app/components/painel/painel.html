@@ -43,6 +43,51 @@
     </div>
   </div>
 
+  <section class="executive-dashboard">
+    <div class="executive-card revenue-card">
+      <span>Receita realizada</span>
+      <strong>{{ receitaRealizada() | currency:'BRL':'symbol':'1.2-2' }}</strong>
+      <small>Somente atendimentos concluidos</small>
+    </div>
+
+    <div class="executive-card">
+      <span>Receita prevista</span>
+      <strong>{{ receitaPrevista() | currency:'BRL':'symbol':'1.2-2' }}</strong>
+      <small>Consultas agendadas em aberto</small>
+    </div>
+
+    <div class="executive-card">
+      <span>Taxa de conclusao</span>
+      <strong>{{ taxaConclusao() | number:'1.0-1' }}%</strong>
+      <small>{{ quantidadePorStatus('CONCLUIDO') }} de {{ atendimentos.length }} atendimentos</small>
+    </div>
+
+    <div class="executive-card alert-card" [class.has-alert]="atendimentosAtrasados() > 0">
+      <span>Alertas</span>
+      <strong>{{ atendimentosAtrasados() }}</strong>
+      <small>Agendamentos atrasados</small>
+    </div>
+  </section>
+
+  <section class="agenda-panel">
+    <div>
+      <h3>Agenda inteligente</h3>
+      <p>Proximos 7 dias: <strong>{{ proximos7Dias() }}</strong> atendimento(s). Ticket medio: <strong>{{ ticketMedio() | currency:'BRL':'symbol':'1.2-2' }}</strong></p>
+    </div>
+
+    <div class="agenda-list" *ngIf="proximosAtendimentos().length > 0; else semProximos">
+      <article *ngFor="let item of proximosAtendimentos()">
+        <strong>{{ item.dataAtendimento | date:'dd/MM/yyyy' }}</strong>
+        <span>{{ item.animalNome }} com Dr(a). {{ item.veterinarioNome }}</span>
+        <small>{{ item.valor | currency:'BRL':'symbol':'1.2-2' }}</small>
+      </article>
+    </div>
+
+    <ng-template #semProximos>
+      <p class="historico-muted">Nenhum atendimento agendado para os proximos dias.</p>
+    </ng-template>
+  </section>
+
   <div *ngIf="mostrarAnimais" class="table-container">
     <table class="modern-table">
       <thead>
@@ -109,6 +154,26 @@
   </div>
 
   <div *ngIf="mostrarAtendimentos" class="table-container">
+    <div class="atendimento-toolbar">
+      <div class="toolbar-field">
+        <label>Status</label>
+        <select class="modern-input" [(ngModel)]="filtroStatus">
+          <option value="TODOS">Todos</option>
+          <option *ngFor="let status of statusAtendimentos" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+
+      <div class="toolbar-field toolbar-search">
+        <label>Buscar</label>
+        <input class="modern-input" [(ngModel)]="termoBuscaAtendimento" placeholder="Paciente, veterinario ou descricao">
+      </div>
+
+      <div class="toolbar-summary">
+        <strong>{{ atendimentosFiltrados.length }}</strong>
+        <span>registro(s)</span>
+      </div>
+    </div>
+
     <p *ngIf="mensagemStatus" [ngClass]="erroStatus ? 'msg-error' : 'msg-success'" class="table-feedback">
       {{ mensagemStatus }}
     </p>
@@ -124,7 +189,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let at of atendimentos">
+        <tr *ngFor="let at of atendimentosFiltrados">
           <td>{{ at.dataAtendimento | date:'dd/MM/yyyy' }}</td>
           <td>
             <select

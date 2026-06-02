@@ -30,6 +30,133 @@
   color: #991B1B;
 }
 
+.executive-dashboard {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  margin: 26px 0;
+}
+
+.executive-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 18px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  padding: 22px;
+  position: relative;
+}
+
+.executive-card::after {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(59, 130, 246, 0.12));
+  border-radius: 999px;
+  content: "";
+  height: 86px;
+  position: absolute;
+  right: -28px;
+  top: -28px;
+  width: 86px;
+}
+
+.executive-card span,
+.executive-card small {
+  color: var(--text-muted);
+  display: block;
+  font-weight: 600;
+}
+
+.executive-card strong {
+  color: var(--text-main);
+  display: block;
+  font-size: 1.75rem;
+  margin: 8px 0;
+}
+
+.revenue-card {
+  border-left: 6px solid var(--secondary);
+}
+
+.alert-card {
+  border-left: 6px solid var(--info);
+}
+
+.alert-card.has-alert {
+  border-left-color: var(--danger);
+}
+
+.agenda-panel {
+  align-items: stretch;
+  background: #0F172A;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
+  color: white;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(220px, 0.7fr) 1.3fr;
+  margin-bottom: 26px;
+  padding: 24px;
+}
+
+.agenda-panel h3 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.agenda-panel p,
+.agenda-panel small {
+  color: #CBD5E1;
+}
+
+.agenda-list {
+  display: grid;
+  gap: 10px;
+}
+
+.agenda-list article {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 110px 1fr auto;
+  padding: 14px;
+}
+
+.agenda-list strong {
+  color: #A7F3D0;
+}
+
+.atendimento-toolbar {
+  align-items: end;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 190px 1fr auto;
+  padding: 16px;
+}
+
+.toolbar-field label {
+  color: var(--text-muted);
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.toolbar-summary {
+  background: #EFF6FF;
+  border-radius: var(--radius-sm);
+  color: var(--info);
+  padding: 12px 16px;
+  text-align: center;
+}
+
+.toolbar-summary strong {
+  display: block;
+  font-size: 1.2rem;
+}
+
 .prontuario-modal {
   max-width: 760px;
 }
@@ -120,6 +247,10 @@
 }
 
 @media (max-width: 700px) {
+  .executive-dashboard,
+  .agenda-panel,
+  .agenda-list article,
+  .atendimento-toolbar,
   .prontuario-grid,
   .prontuario-metricas {
     grid-template-columns: 1fr;

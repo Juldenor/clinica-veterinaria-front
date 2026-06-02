@@ -16,7 +16,10 @@ export class Painel implements OnInit {
   clientes: any[] = [];
   veterinarios: any[] = [];
   atendimentos: any[] = [];
+  dashboardResumo: any = null;
   statusAtendimentos = ['AGENDADO', 'CONCLUIDO', 'CANCELADO'];
+  filtroStatus = 'TODOS';
+  termoBuscaAtendimento = '';
   mensagemStatus = '';
   erroStatus = false;
   erroPainel = '';
@@ -54,17 +57,21 @@ export class Painel implements OnInit {
   async carregarDadosPainel() {
     this.erroPainel = '';
 
-    const [animais, clientes, veterinarios, atendimentos] = await Promise.allSettled([
+    const [animais, clientes, veterinarios, atendimentos, dashboard] = await Promise.allSettled([
       this.buscarComToken<any[]>('http://localhost:8080/animais'),
       this.buscarComToken<any[]>('http://localhost:8080/clientes'),
       this.buscarComToken<any[]>('http://localhost:8080/veterinarios'),
-      this.buscarComToken<any[]>('http://localhost:8080/atendimentos')
+      this.buscarComToken<any[]>('http://localhost:8080/atendimentos'),
+      this.buscarComToken<any>('http://localhost:8080/dashboard/resumo')
     ]);
 
     this.aplicarResultado(animais, (dados) => this.animais = dados, 'Nao foi possivel carregar os animais.');
     this.aplicarResultado(clientes, (dados) => this.clientes = dados, 'Nao foi possivel carregar os clientes.');
     this.aplicarResultado(veterinarios, (dados) => this.veterinarios = dados, 'Nao foi possivel carregar os veterinarios.');
     this.aplicarResultado(atendimentos, (dados) => this.atendimentos = dados, 'Nao foi possivel carregar os atendimentos.');
+    if (dashboard.status === 'fulfilled') {
+      this.dashboardResumo = dashboard.value;
+    }
     this.cdr.detectChanges();
   }
 
@@ -130,6 +137,7 @@ export class Painel implements OnInit {
         Object.assign(atendimento, atendimentoAtualizado);
         this.erroStatus = false;
         this.mensagemStatus = 'Status do atendimento atualizado com sucesso.';
+        this.carregarResumoDashboard();
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -183,6 +191,119 @@ export class Painel implements OnInit {
     return this.historicoAnimal.filter((atendimento) => atendimento.status === 'CONCLUIDO').length;
   }
 
+  get atendimentosFiltrados(): any[] {
+    const termo = this.termoBuscaAtendimento.trim().toLowerCase();
+
+    return this.atendimentos.filter((atendimento) => {
+      const statusOk = this.filtroStatus === 'TODOS' || atendimento.status === this.filtroStatus;
+      const texto = [
+        atendimento.animalNome,
+        atendimento.veterinarioNome,
+        atendimento.descricao,
+        atendimento.status
+      ].join(' ').toLowerCase();
+
+      return statusOk && (!termo || texto.includes(termo));
+    });
+  }
+
+  receitaRealizada(): number {
+    if (this.dashboardResumo) {
+      return this.dashboardResumo.receitaRealizada || 0;
+    }
+
+    return this.atendimentos
+      .filter((atendimento) => atendimento.status === 'CONCLUIDO')
+      .reduce((total, atendimento) => total + (atendimento.valor || 0), 0);
+  }
+
+  receitaPrevista(): number {
+    if (this.dashboardResumo) {
+      return this.dashboardResumo.receitaPrevista || 0;
+    }
+
+    return this.atendimentos
+      .filter((atendimento) => atendimento.status === 'AGENDADO')
+      .reduce((total, atendimento) => total + (atendimento.valor || 0), 0);
+  }
+
+  ticketMedio(): number {
+    if (this.dashboardResumo) {
+      return this.dashboardResumo.ticketMedio || 0;
+    }
+
+    const concluidos = this.quantidadePorStatus('CONCLUIDO');
+    return concluidos === 0 ? 0 : this.receitaRealizada() / concluidos;
+  }
+
+  taxaConclusao(): number {
+    if (this.dashboardResumo) {
+      return this.dashboardResumo.taxaConclusao || 0;
+    }
+
+    return this.atendimentos.length === 0 ? 0 : (this.quantidadePorStatus('CONCLUIDO') * 100) / this.atendimentos.length;
+  }
+
+  quantidadePorStatus(status: string): number {
+    if (this.dashboardResumo) {
+      const campos: any = {
+        AGENDADO: 'atendimentosAgendados',
+        CONCLUIDO: 'atendimentosConcluidos',
+        CANCELADO: 'atendimentosCancelados'
+      };
+
+      return this.dashboardResumo[campos[status]] || 0;
+    }
+
+    return this.atendimentos.filter((atendimento) => atendimento.status === status).length;
+  }
+
+  atendimentosAtrasados(): number {
+    if (this.dashboardResumo) {
+      return this.dashboardResumo.atendimentosAtrasados || 0;
+    }
+
+    const hoje = this.inicioDoDia(new Date());
+    return this.atendimentos
+      .filter((atendimento) => atendimento.status === 'AGENDADO')
+      .filter((atendimento) => atendimento.dataAtendimento)
+      .filter((atendimento) => this.dataLocal(atendimento.dataAtendimento) < hoje)
+      .length;
+  }
+
+  proximos7Dias(): number {
+    if (this.dashboardResumo) {
+      return this.dashboardResumo.proximos7Dias || 0;
+    }
+
+    const hoje = this.inicioDoDia(new Date());
+    const limite = new Date(hoje);
+    limite.setDate(limite.getDate() + 7);
+
+    return this.atendimentos
+      .filter((atendimento) => atendimento.status === 'AGENDADO')
+      .filter((atendimento) => atendimento.dataAtendimento)
+      .filter((atendimento) => {
+        const data = this.dataLocal(atendimento.dataAtendimento);
+        return data >= hoje && data <= limite;
+      })
+      .length;
+  }
+
+  proximosAtendimentos(): any[] {
+    if (this.dashboardResumo?.proximosAtendimentos?.length) {
+      return this.dashboardResumo.proximosAtendimentos;
+    }
+
+    const hoje = this.inicioDoDia(new Date());
+    return this.atendimentos
+      .filter((atendimento) => atendimento.status === 'AGENDADO')
+      .filter((atendimento) => atendimento.dataAtendimento)
+      .filter((atendimento) => this.dataLocal(atendimento.dataAtendimento) >= hoje)
+      .sort((a, b) => String(a.dataAtendimento).localeCompare(String(b.dataAtendimento)))
+      .slice(0, 5);
+  }
+
   fecharDetalhes() {
     this.animalSelecionado = null;
     this.historicoAnimal = [];
@@ -207,6 +328,16 @@ export class Painel implements OnInit {
     }
 
     this.tratarErroCarregamento(resultado.reason, mensagemErro);
+  }
+
+  private async carregarResumoDashboard() {
+    try {
+      this.dashboardResumo = await this.buscarComToken<any>('http://localhost:8080/dashboard/resumo');
+      this.cdr.detectChanges();
+    } catch (err) {
+      this.dashboardResumo = null;
+      console.error('Nao foi possivel carregar o resumo do dashboard.', err);
+    }
   }
 
   private async buscarComToken<T>(url: string): Promise<T> {
@@ -259,5 +390,16 @@ export class Painel implements OnInit {
     }
 
     return mensagemPadrao;
+  }
+
+  private dataLocal(data: string): Date {
+    const [ano, mes, dia] = data.split('-').map(Number);
+    return new Date(ano, mes - 1, dia);
+  }
+
+  private inicioDoDia(data: Date): Date {
+    const normalizada = new Date(data);
+    normalizada.setHours(0, 0, 0, 0);
+    return normalizada;
   }
 }
